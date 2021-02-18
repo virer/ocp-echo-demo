@@ -1,0 +1,72 @@
+kind: "Deployment"
+apiVersion: "apps/v1"
+metadata:
+  name: "ocp-echo-demo"
+  app: "ocp-echo-demo"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "ocp-echo-demo"
+      app: "ocp-echo-demo"
+  template: 
+    metadata:
+      labels:
+        name: "ocp-echo-demo"
+        app: "ocp-echo-demo"
+    spec:
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: ocp-echo-demo-users
+
+      containers:
+        - name: "ocp-echo-demo"
+          image: image-registry.openshift-image-registry.svc:5000/pipe/ocp-echo-demo:latest
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+          resources: {}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 3
+            timeoutSeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+          terminationMessagePath: /dev/termination-log
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 3
+            timeoutSeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+  strategy: 
+    type: "RollingUpdate"
+  paused: false 
+  revisionHistoryLimit: 2 
+  minReadySeconds: 3
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ocp-echo-demo
+  labels:
+    app: ocp-echo-demo
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: ocp-echo-demo
+    name: ocp-echo-demo
+  sessionAffinity: None
