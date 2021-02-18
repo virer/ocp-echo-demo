@@ -57,7 +57,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: ocp-echo-demo
+  name: echo
   labels:
     app: ocp-echo-demo
 spec:
