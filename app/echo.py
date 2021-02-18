@@ -80,6 +80,13 @@ def clear_cache():
     cache.clear()
     return jsonify( { "status": True, "message": "cache cleared" } )
 
+@app.route('/api/service', methods=['GET']) 
+def get_service():
+    global svc_list
+    
+    return jsonify( { "services": svc_list } )
+
+@app.route('/api/service', methods=['POST'])
 @app.route('/api/service/add', methods=['POST'])
 def add_service():
     global svc_list
