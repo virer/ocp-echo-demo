@@ -22,7 +22,7 @@ spec:
 
       containers:
         - name: "ocp-echo-demo"
-          image: image-registry.openshift-image-registry.svc:5000/pipe/ocp-echo-demo:latest
+          image: docker.io/scaps/ocp-echo-demo:latest
           ports:
             - containerPort: 8080
               protocol: "TCP"
