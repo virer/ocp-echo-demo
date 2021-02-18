@@ -1,6 +1,17 @@
 # OCP-ECHO-DEMO
 
-A little python Flask API demo with caching dict
+A little python Flask API demo with caching dict to play with
+
+### Deploy on K8s 
+```
+kubectl apply -f https://raw.githubusercontent.com/virer/ocp-echo-demo/main/openshift/deployment.yaml
+```
+
+### Deploy on OpenShift
+```
+oc new-project echo
+oc apply -f https://raw.githubusercontent.com/virer/ocp-echo-demo/main/openshift/deployment.yaml
+```
 
 ### Add some
 ```
